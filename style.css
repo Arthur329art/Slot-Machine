@@ -1,0 +1,44 @@
+const reels = [
+  document.getElementById('reel1'),
+  document.getElementById('reel2'),
+  document.getElementById('reel3')
+];
+
+const spinButton = document.getElementById('spin-button');
+const message = document.getElementById('message');
+
+const symbols = ['🍒', '🍋', '🍊', '🍉', '⭐', '7️⃣'];
+
+function spin() {
+  spinButton.disabled = true;
+  message.textContent = 'Girando...';
+
+  let results = [];
+  let spins = 0;
+  const maxSpins = 20;
+
+  const interval = setInterval(() => {
+    for (let i = 0; i < reels.length; i++) {
+      const randSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+      reels[i].textContent = randSymbol;
+      results[i] = randSymbol;
+    }
+    spins++;
+
+    if (spins >= maxSpins) {
+      clearInterval(interval);
+      checkWin(results);
+      spinButton.disabled = false;
+    }
+  }, 100);
+}
+
+function checkWin(results) {
+  if (results[0] === results[1] && results[1] === results[2]) {
+    message.textContent = '🎉 Parabéns! Você ganhou! 🎉';
+  } else {
+    message.textContent = 'Tente de novo!';
+  }
+}
+
+spinButton.addEventListener('click', spin);
